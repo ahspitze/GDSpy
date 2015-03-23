@@ -29,8 +29,7 @@ def floatConvert(frame,bad):
 
 #csv objectt
 file='array2.soft'
-fileIt= open(file)
-readIt= csv.reader(fileIt, delimiter='\t')
+readIt= csv.reader(open(file), delimiter='\t')
 
 
 
@@ -43,7 +42,10 @@ probeRef=[]
 probeID=[]
 gExpress=[]
 samples=0
+subsets=[]
 
+
+print('loading')
 
 #First group all database annotation into a list called info
 #and use this data to count the number of samples
@@ -51,9 +53,15 @@ while row[0] !='!dataset_table_begin':
     row=next(readIt)
     if row[0] != '!dataset_table_begin':
         info.append(row[0])
-        if row[0][:4]=='#GSM':
-            samples=samples+1
+        if row[0][:17]=='!subset_sample_id':
+            subsets.append(row[0][20:].split(','))
+            
     else: pass
+#Allan please add sample counter using subsets list
+for j in subsets:
+    samples=samples+len(j)
+
+
     
 #column names grouped into a header
 row=next(readIt)
@@ -72,13 +80,13 @@ while row[0] != '!dataset_table_end' :
         pass
     
 print(file,' loaded successfully with ',len(probeRef),' probes.')
-print('Detected ',samples,' samples.')
+print('Detected ',samples,' samples, ',len(subsets),' groups')
 
 
 
 
 
-gExpress=floatConvert(gExpress,-1)
+gExpress=floatConvert(gExpress,-99)
 
 
 
