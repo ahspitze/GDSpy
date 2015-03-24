@@ -32,64 +32,69 @@ file='array2.soft'
 readIt= csv.reader(open(file), delimiter='\t')
 
 
-
+def dataRead (readIt):
+    
 #initializations for various counters and lists
 
-row=[0]
-info=[]
-header=[]
-probeRef=[]
-probeID=[]
-gExpress=[]
-subsets=[]
-GDS={}
+    row=[0]
+    header=[]
+    probeRef={}
+    probeID=[]
+    gExpress=[]
+    subsets=[]
+    GDS={}
 
 
 
 
-print('loading')
+    print('loading')
 
-#process and divide dataset annotation
+    #process and divide dataset annotation
 
-while row[0] !='!dataset_table_begin':  
-    row=next(readIt)
-    if row[0] != '!dataset_table_begin':
-        info.append(row[0])
-        if row[0][:17]=='!subset_sample_id':
-            subsets.append(row[0][20:].split(','))
-        elif '=' in row[0] and '!' in row[0] and not 'subset' in row[0]:
-            a=row[0].split(' = ')
-            try:
-                a[1]=int(a[1])
-            except ValueError:
-                pass
-            GDS[a[0][1:].lower()]=a[1]
-        
+
+    while row[0] !='!dataset_table_begin':  
+        row=next(readIt)
+        if row[0] != '!dataset_table_begin':
+            if row[0][:17]=='!subset_sample_id':
+                subsets.append(row[0][20:].split(','))
+            elif '=' in row[0] and '!' in row[0] and not 'subset' in row[0]:
+                a=row[0].split(' = ')
+                try:
+                    a[1]=int(a[1])
+                except ValueError:
+                    pass
+                GDS[a[0][1:].lower()]=a[1]
             
-    else: pass
+                
+        else: pass
 
-GDS['subsets']=subsets
-    
-    
-#column names grouped into a header
-row=next(readIt)
-header.append(row)
-
-
-#Begin the data read and terminate before the last row
-
-samples= GDS['dataset_sample_count']
-
-while row[0] != '!dataset_table_end' :
+    GDS['subsets']=subsets
+        
+        
+    #column names grouped into a header
     row=next(readIt)
-    if row[0] != '!dataset_table_end':
-        probeRef.append(row[0])
-        probeID.append(row[1])
-        gExpress.append(row[2:(samples+2)])
-    else:
-        pass
-    
-print(file,' loaded successfully with ',len(probeRef),' features.')
+    header.append(row)
+
+
+    #Begin the data read and terminate before the last row
+
+    samples= GDS['dataset_sample_count']
+
+    while row[0] != '!dataset_table_end' :
+        row=next(readIt)
+        if row[0] != '!dataset_table_end':
+            probeRef[row[0]]=row[1]
+            probeID.append(row[1])
+            gExpress.append(row[2:(samples+2)])
+        else:
+            pass
+
+
+    return GDS, gExpress, probeRef, probeID, header
+
+GDS, gExpress, probeRef, probeID, header= dataRead(readIt)
+
+print(file,' loaded successfully with ',len(probeID),' features.')
 print('Detected ',GDS['dataset_sample_count'],' samples, ',len(GDS['subsets']),' groups')
 
 
@@ -103,7 +108,7 @@ gExpress=floatConvert(gExpress,-99)
 
 
 
-#print(gExpress[0:4])
+print(gExpress[0:4])
 
 ###
 print('\n','done')
