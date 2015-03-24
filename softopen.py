@@ -41,27 +41,35 @@ header=[]
 probeRef=[]
 probeID=[]
 gExpress=[]
-samples=0
 subsets=[]
+GDS={}
+
+
 
 
 print('loading')
 
-#First group all database annotation into a list called info
-#and use this data to count the number of samples
+#process and divide dataset annotation
+
 while row[0] !='!dataset_table_begin':  
     row=next(readIt)
     if row[0] != '!dataset_table_begin':
         info.append(row[0])
         if row[0][:17]=='!subset_sample_id':
             subsets.append(row[0][20:].split(','))
+        elif '=' in row[0] and '!' in row[0] and not 'subset' in row[0]:
+            a=row[0].split(' = ')
+            try:
+                a[1]=int(a[1])
+            except ValueError:
+                pass
+            GDS[a[0][1:].lower()]=a[1]
+        
             
     else: pass
-#Allan please add sample counter using subsets list
-for j in subsets:
-    samples=samples+len(j)
 
-
+GDS['subsets']=subsets
+    
     
 #column names grouped into a header
 row=next(readIt)
@@ -69,6 +77,8 @@ header.append(row)
 
 
 #Begin the data read and terminate before the last row
+
+samples= GDS['dataset_sample_count']
 
 while row[0] != '!dataset_table_end' :
     row=next(readIt)
@@ -79,8 +89,8 @@ while row[0] != '!dataset_table_end' :
     else:
         pass
     
-print(file,' loaded successfully with ',len(probeRef),' probes.')
-print('Detected ',samples,' samples, ',len(subsets),' groups')
+print(file,' loaded successfully with ',len(probeRef),' features.')
+print('Detected ',GDS['dataset_sample_count'],' samples, ',len(GDS['subsets']),' groups')
 
 
 
