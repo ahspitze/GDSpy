@@ -27,8 +27,8 @@ def floatConvert(frame,bad):
 
 
 
-#csv objectt
-file='array2.soft'
+#csv object
+file='array.soft'
 readIt= csv.reader(open(file), delimiter='\t')
 
 
@@ -42,6 +42,8 @@ def dataRead (readIt):
     probeID=[]
     gExpress=[]
     subsets=[]
+    sType=[]
+    sDescrip=[]
     GDS={}
 
 
@@ -57,6 +59,12 @@ def dataRead (readIt):
         if row[0] != '!dataset_table_begin':
             if row[0][:17]=='!subset_sample_id':
                 subsets.append(row[0][20:].split(','))
+            elif '=' in row[0] and '!' in row[0] and'subset_type' in row[0]:
+                a=row[0].split(' = ')
+                sType.append(a[1])
+            elif '=' in row[0] and '!' in row[0] and'subset_description' in row[0]:
+                a=row[0].split(' = ')
+                sDescrip.append(a[1])
             elif '=' in row[0] and '!' in row[0] and not 'subset' in row[0]:
                 a=row[0].split(' = ')
                 try:
@@ -69,16 +77,16 @@ def dataRead (readIt):
         else: pass
 
     GDS['subsets']=subsets
+    GDS['subset_types']=sType
+    GDS['subset_names']=sDescrip
+    samples= GDS['dataset_sample_count']    
         
-        
-    #column names grouped into a header
+    #sample names grouped into a header
     row=next(readIt)
-    header.append(row)
+    header.append(row[2:samples+2])
 
 
     #Begin the data read and terminate before the last row
-
-    samples= GDS['dataset_sample_count']
 
     while row[0] != '!dataset_table_end' :
         row=next(readIt)
@@ -108,7 +116,7 @@ gExpress=floatConvert(gExpress,-99)
 
 
 
-print(gExpress[0:4])
+#print(gExpress[0:4])
 
 ###
 print('\n','done')
