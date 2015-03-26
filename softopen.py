@@ -28,12 +28,12 @@ def floatConvert(frame,bad):
 
 
 #csv object
-file='array.soft'
-readIt= csv.reader(open(file), delimiter='\t')
 
 
-def dataRead (readIt):
-    
+
+
+def dataRead (file):
+    readIt= csv.reader(open(file), delimiter='\t')
 #initializations for various counters and lists
 
     row=[0]
@@ -100,16 +100,18 @@ def dataRead (readIt):
 
     return GDS, gExpress, probeRef, probeID, header
 
-GDS, gExpress, probeRef, probeID, header= dataRead(readIt)
-
-print(file,' loaded successfully with ',len(probeID),' features.')
-print('Detected ',GDS['dataset_sample_count'],' samples, ',len(GDS['subsets']),' groups')
+#GDS, gExpress, probeRef, probeID, header= dataRead(file)
 
 
+def report(file, probeID, GDS):
+    print(file,' loaded successfully with ',len(probeID),' features.')
+    print('Detected ',GDS['dataset_sample_count'],' samples, ',len(GDS['subsets']),' groups')
 
 
 
-gExpress=floatConvert(gExpress,-99)
+
+
+#gExpress=floatConvert(gExpress,-99)
 
 
 
