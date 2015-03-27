@@ -2,7 +2,10 @@
 #Tools for opening and working with Gene expression Data Sets (GDS)
 # .soft and full soft formats
 
-import csv
+try:
+    import csv
+except ValueError:
+    print('Dependency warning! This module requires the CSV library')
 
 #floatConvert(frame,bad)
 #convert strings to floats
@@ -27,25 +30,21 @@ def floatConvert(frame,bad):
 
 
 
-#csv object
-
-
-
 
 def dataRead (file):
     readIt= csv.reader(open(file), delimiter='\t')
 #initializations for various counters and lists
 
     row=[0]
-    header=[]
-    probeRef={}
-    probeID=[]
-    gExpress=[]
-    subsets=[]
-    sType=[]
-    sDescrip=[]
-    GDS={}
-
+    header=[]   # sample header info for expression values
+    probeRef={} # dictionary of probes and their corresponding gene symbols
+    probeID=[]  # list of gene symbols
+    gExpress=[] # 2D array of gene expression values
+    subsets=[]  # 2D list of experimental subsets
+    sType=[]    # parallel list of subset types (agent, control, time series, etc) for list in subsets[]
+    sDescrip=[] # parallel list of subset names (infection, control, patient 16, etc) for list in subsets []
+    GDS={}      # GDS metadata including subsets and subset info
+    arrayDat={} #wrapper for everything to passed for analysis
 
 
 
@@ -97,10 +96,14 @@ def dataRead (file):
         else:
             pass
 
-
-    return GDS, gExpress, probeRef, probeID, header
-
-#GDS, gExpress, probeRef, probeID, header= dataRead(file)
+    #convert strings to float in data    
+    gExpress=floatConvert(gExpress,-99)
+    
+    #consolidate data into a single dictionary so it can be more easily passed to analysis routines
+        
+    arrayDat['GDS'],arrayDat['header'],arrayDat['gExpress']=GDS,header,gExpress
+    arrayDat['probeID'], arrayDat['probeRef']=probeID,probeRef
+    return arrayDat
 
 
 def report(file, probeID, GDS):
@@ -110,18 +113,8 @@ def report(file, probeID, GDS):
 
 
 
-
-#gExpress=floatConvert(gExpress,-99)
-
-
-
-
-
-
-#print(gExpress[0:4])
-
 ###
-print('\n','done')
+print('\n','.SOFT library initialized')
 
 
 ###########################################################################    
