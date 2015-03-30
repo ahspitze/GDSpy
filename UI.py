@@ -21,12 +21,22 @@ def navigate(k):
 
     
 def filesave(arrayDat):
-    name=input('Type file name to export data as')
-    export= open(name, 'w')
+    name=input('Type file name to export data as  ')
+    print('availible data to export are: ')
     for entries in arrayDat:
-        line=str(entries)+'\n'
-        export.write(line)
-    export.close()
+        print(entries)
+    print('all')
+    eType=input('Export what? ')
+    if eType !='all':       
+        export= open(name, 'w')
+        export.write(str(arrayDat[eType]))
+        export.close()
+    else:
+        export= open(name, 'w')
+        for entries in arrayDat:
+            line=str(arrayDat[entries])
+            export.write(line)
+        export.close()
 
 
     
@@ -40,9 +50,9 @@ def console():
         if k==2:
             request=input('Enter a compatible microarray data file.  ')
             if '.soft' in request:
-                import softopen
-                arrayDat= softopen.dataRead(request)
-                softopen.report(request, arrayDat['probeID'], arrayDat['GDS'])  
+                import openerV2
+                arrayDat= openerV2.dataRead(request)
+                openerV2.report(request, arrayDat['probeID'], arrayDat['GDS'])  
             else:
                 print('Invalid file format, see documentation for supported formats')
                 
