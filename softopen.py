@@ -4,7 +4,7 @@
 
 try:
     import csv
-except ValueError:
+except ImportError:
     print('Dependency warning! This module requires the CSV library')
 
 #floatConvert(frame,bad)
@@ -43,7 +43,7 @@ def dataRead (file):
     subsets=[]  # 2D list of experimental subsets
     sType=[]    # parallel list of subset types (agent, control, time series, etc) for list in subsets[]
     sDescrip=[] # parallel list of subset names (infection, control, patient 16, etc) for list in subsets []
-    GDS={}      # GDS metadata including subsets and subset info
+    GDS={}      # GDS metadata including subsets
     arrayDat={} #wrapper for everything to passed for analysis
 
 
@@ -95,13 +95,10 @@ def dataRead (file):
             gExpress.append(row[2:(samples+2)])
         else:
             pass
-
-    #convert strings to float in data    
     gExpress=floatConvert(gExpress,-99)
-    
-    #consolidate data into a single dictionary so it can be more easily passed to analysis routines
+     #consolidate data into a single dictionary so it can be more easily passed to analysis routines
         
-    arrayDat['GDS'],arrayDat['header'],arrayDat['gExpress']=GDS,header,gExpress
+    arrayDat['GDS'],arrayDat['header'],arrayDat['gExpress']=GDS,header[0],gExpress
     arrayDat['probeID'], arrayDat['probeRef']=probeID,probeRef
     return arrayDat
 
