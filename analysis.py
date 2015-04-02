@@ -103,7 +103,7 @@ def pickTwo(sType, sName, subsets):
     #populate lists groupA and groupB from subsets
     #relies on the fact that sName and subsets are parallel arrays
     for names in sName:
-s        if names==n[select]:
+        if names==n[select]:
             groupA=(subsets[i])
         elif names==m[select2]:
             groupB=(subsets[i])
