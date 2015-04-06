@@ -1,0 +1,8 @@
+GDSpy -- Copyright 2015 Alex Spitzer
+
+This license to include all past, future, and derivative works unless specifically released by myself, Alex Spitzer. The code contained is open source but may not be used in whole or in part without attribution. All derivative works including code from this project must also be open source. Academic and educational use of the project or derivative work is permitted provided use is cited appropriately. Commercial users should get permission of the author.
+
+Contact info: 
+Alex Spitzer
+alex.h.spitzer@gmail.com
+https://github.com/ahspitze

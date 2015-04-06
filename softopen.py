@@ -11,8 +11,8 @@ except ImportError:
 #convert strings to floats
 #GDSs will occasionally have problematic values like 'null'
 #the second argument flags nonfloatable elements (bad)
-#you can use negatives to push them to the bottom of ordering functions
 #remember to trim before using statistical comparisons
+#or otherwise account for missing data
 def floatConvert(frame,bad):
     countX=0    
     for x in frame:

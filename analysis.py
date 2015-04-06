@@ -9,12 +9,12 @@ def crunch(arrayDat):
     sType=GDS['subset_types']
     sName=GDS['subset_names']
 
-    print('Enter the number of the operation to perform:')
+    print('Enter the number of the operation to perform :')
     procedure=int(input(' 1) fold change 2) back '))
     if procedure==1:
         xfoldChange=foldChange(sType, sName, subsets, header, gExpress)
         arrayDat['fold change']=xfoldChange
-        print('analyzed ',len(xfoldChange),' maximum ', max(xfoldChange))
+        print('analyzed ',len(xfoldChange),'. Maximum ', max(xfoldChange))
     return arrayDat
 
 
@@ -66,7 +66,7 @@ def pickTwo(sType, sName, subsets):
     for types in set(sType):
         t==t.append(types)
         print(len(t), ') ', types)
-    select=int(input('Type the number only '))-1
+    select=int(input('Enter the number only :'))-1
     i=0
     for types in sType:
         if types==t[select]:
@@ -87,7 +87,7 @@ def pickTwo(sType, sName, subsets):
             j=j+1
         i=i+1
             
-    select=int(input('Type the number only '))-1
+    select=int(input('Enter the number only :'))-1
     i=0
     j=0
     m=[]
@@ -98,7 +98,7 @@ def pickTwo(sType, sName, subsets):
             m.append(names)
             j=j+1
         
-    select2=int(input('Type the number only '))-1
+    select2=int(input('Enter the number only :'))-1
 
     #populate lists groupA and groupB from subsets
     #relies on the fact that sName and subsets are parallel arrays
